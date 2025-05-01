@@ -20,7 +20,7 @@ jobs:
           sudo rm -Rf ${JAVA_HOME_17_X64}
           sudo rm -Rf ${RUBY_PATH}
       - uses: actions/checkout@v4
-      - uses: Swatinem/rust-cache@v2
+      # - uses: Swatinem/rust-cache@v2
       - uses: taiki-e/install-action@nextest
       - name: Get the dump
         run: |
