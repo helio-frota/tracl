@@ -1,9 +1,30 @@
-use serde_json::Value;
+use serde_json::{Value, json};
 use tracl::{client::LibClient, config::LibConfig, endpoints};
 
 fn client() -> LibClient {
     let config = LibConfig::from_env();
     LibClient::new(config.api_base_url)
+}
+
+#[tokio::test]
+async fn test_analyze() {
+    let data = json!({
+        "purls": ["pkg:npm/accepts@1.3.8"]
+    });
+
+    let res = endpoints::analyze(&client(), data)
+        .await
+        .expect("analyze failed");
+
+    assert!(
+        res.status().is_success(),
+        "Unexpected status: {}",
+        res.status()
+    );
+
+    let result: Value = res.json().await.expect("Failed to parse JSON");
+    assert_eq!(result, serde_json::json!({}), "Empty JSON expected");
+    println!("Result: {}", result);
 }
 
 #[tokio::test]
@@ -15,14 +36,13 @@ async fn test_info() {
         res.status()
     );
 
-    // let body = res.text().await.expect("Failed to read body");
-    // assert!(!body.is_empty(), "Response body is empty");
+    // let result = res.text().await.expect("Failed to read");
+    // assert!(!result.is_empty(), "Response is empty");
 
-    let body: Value = res.json().await.expect("Failed to parse JSON");
+    let result: Value = res.json().await.expect("Failed to parse JSON");
     assert_eq!(
-        body["build"]["target"]["os"].as_str(),
+        result["build"]["target"]["os"].as_str(),
         Some("linux"),
         "OS mismatch"
     );
-    println!("Body: {}", body);
 }
