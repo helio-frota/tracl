@@ -7,7 +7,7 @@ fn client() -> LibClient {
 }
 
 #[tokio::test]
-async fn test_analyze() {
+async fn analyze() {
     let data = json!({
         "purls": ["pkg:npm/accepts@1.3.8"]
     });
@@ -28,7 +28,7 @@ async fn test_analyze() {
 }
 
 #[tokio::test]
-async fn test_info() {
+async fn info() {
     let res = endpoints::info(&client()).await.expect("info failed");
     assert!(
         res.status().is_success(),
