@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+sleep 5
+
 psql_path="$HOME/work/tracl/tracl/.trustify/postgres/17.2.0/bin/psql"
 dump_path="$HOME/work/tracl/tracl/dump.sql"
 
