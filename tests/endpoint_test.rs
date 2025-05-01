@@ -7,7 +7,6 @@ fn client() -> LibClient {
 }
 
 #[tokio::test]
-#[ignore]
 async fn analyze() {
     let data = json!({
         "purls": ["pkg:npm/accepts@1.3.8"]
