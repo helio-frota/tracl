@@ -36,9 +36,6 @@ async fn info() {
         res.status()
     );
 
-    // let result = res.text().await.expect("Failed to read");
-    // assert!(!result.is_empty(), "Response is empty");
-
     let result: Value = res.json().await.expect("Failed to parse JSON");
     assert_eq!(
         result["build"]["target"]["os"].as_str(),
