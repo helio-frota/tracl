@@ -30,6 +30,7 @@ jobs:
         run: |
           git clone https://github.com/trustification/trustify.git
           cd trustify
+          cargo build
           AUTH_DISABLED=true cargo run --bin trustd &
           until curl --output /dev/null --silent --head --fail http://localhost:8080; do
             echo "Waiting for trustify..."
