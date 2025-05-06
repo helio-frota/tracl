@@ -15,7 +15,8 @@ impl Default for LibConfig {
 
 impl LibConfig {
     pub fn from_env() -> Self {
-        let api_base_url = env::var("URL").unwrap_or_else(|_| LibConfig::default().api_base_url);
+        let api_base_url =
+            env::var("TRUSTIFY_URL").unwrap_or_else(|_| LibConfig::default().api_base_url);
         Self { api_base_url }
     }
 }

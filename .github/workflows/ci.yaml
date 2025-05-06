@@ -36,5 +36,9 @@ jobs:
             echo "Waiting for trustify..."
             sleep 3
           done
-      - name: Test
-        run: cargo nextest run
+      - name: Test uploads
+        run: cargo nextest run upload
+      - name: Test list
+        run: cargo nextest run list
+      - name: Test other
+        run: cargo nextest run -- analyze info
