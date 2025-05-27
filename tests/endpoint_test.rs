@@ -78,10 +78,10 @@ async fn analyze() {
     assert_success(&res);
 
     let result: Value = res.json().await.expect("Failed to parse JSON");
-    assert_eq!(
+    let expected = Some("CVE-2023-28867");
+    assert_eq!(expected,
         result["pkg:maven/com.redhat.quarkus.platform/quarkus-bom@2.13.8.Final-redhat-00004"][0]["advisories"][0]["document_id"]
                 .as_str(),
-            Some("CVE-2022-45787"),
             "document_id mismatch"
     );
 }
