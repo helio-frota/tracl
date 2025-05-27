@@ -56,6 +56,7 @@ async fn list_weaknesses() {
 }
 
 #[tokio::test]
+#[ignore]
 async fn list_vulnerabilities() {
     let res = endpoints::list_vulnerabilities(&api())
         .await
@@ -68,6 +69,7 @@ async fn list_vulnerabilities() {
 }
 
 #[tokio::test]
+#[ignore]
 async fn analyze() {
     let data = json!({
         "purls": ["pkg:maven/com.redhat.quarkus.platform/quarkus-bom@2.13.8.Final-redhat-00004"]

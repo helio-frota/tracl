@@ -1,0 +1,18 @@
+name: coverage
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - run: |
+          cargo llvm-cov test --json --output-path main_coverage.json
+          main_cov=$(jq '.data[].totals | {lines: .lines.percent, functions: .functions.percent}' main_coverage.json)
+          echo "main_coverage=$main_cov" >> $GITHUB_ENV
+          echo "Main coverage: $main_cov"
