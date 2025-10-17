@@ -45,11 +45,9 @@ jobs:
         run: cargo nextest run list
       - name: Test other
         run: cargo nextest run -- analyze info
-      - name: Main coverage
-        run: |
-          cargo llvm-cov test --json --output-path main_coverage.json
-          lines=$(jq '.data[].totals.lines.percent' main_coverage.json)
-          functions=$(jq '.data[].totals.functions.percent' main_coverage.json)
-          echo "main_lines=$lines" >> $GITHUB_ENV
-          echo "main_functions=$functions" >> $GITHUB_ENV
-          echo "Main coverage - lines: $lines, functions: $functions"
+      - name: Coverage
+        run: cargo llvm-cov --codecov --output-path codecov.json
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
