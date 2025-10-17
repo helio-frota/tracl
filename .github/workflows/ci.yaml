@@ -20,7 +20,10 @@ jobs:
           sudo rm -Rf ${JAVA_HOME_17_X64}
           sudo rm -Rf ${RUBY_PATH}
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@cargo-llvm-cov
       - uses: taiki-e/install-action@nextest
       - name: Check
         run: cargo check
@@ -28,7 +31,7 @@ jobs:
         run: cargo clippy --all-targets --all-features -- -D warnings -D clippy::unwrap_used -D clippy::expect_used
       - name: Run trustify pm-mode
         run: |
-          git clone https://github.com/trustification/trustify.git
+          git clone https://github.com/guacsec/trustify.git
           cd trustify
           cargo build
           AUTH_DISABLED=true cargo run --bin trustd &
@@ -42,3 +45,11 @@ jobs:
         run: cargo nextest run list
       - name: Test other
         run: cargo nextest run -- analyze info
+      - name: Main coverage
+        run: |
+          cargo llvm-cov test --json --output-path main_coverage.json
+          lines=$(jq '.data[].totals.lines.percent' main_coverage.json)
+          functions=$(jq '.data[].totals.functions.percent' main_coverage.json)
+          echo "main_lines=$lines" >> $GITHUB_ENV
+          echo "main_functions=$functions" >> $GITHUB_ENV
+          echo "Main coverage - lines: $lines, functions: $functions"
